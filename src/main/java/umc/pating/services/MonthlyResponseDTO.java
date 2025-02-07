@@ -9,9 +9,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 public class MonthlyResponseDTO {
-    private
-    private
-    private
+
 }
 // daily / test 타입을 결과로 안 돌려줘도 되지 않나?
 // drawing 사진이랑

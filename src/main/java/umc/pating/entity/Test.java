@@ -2,7 +2,6 @@ package umc.pating.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 import umc.pating.entity.common.BaseEntity;
 import umc.pating.entity.enums.TodayMood;
 

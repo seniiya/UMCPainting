@@ -5,7 +5,6 @@ import lombok.*;
 import umc.pating.entity.common.BaseEntity;
 import umc.pating.entity.enums.StressType;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
