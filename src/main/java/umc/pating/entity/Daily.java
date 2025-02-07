@@ -8,7 +8,6 @@ import umc.pating.entity.common.BaseEntity;
 import umc.pating.entity.enums.TodayMood;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
