@@ -56,4 +56,4 @@ public class User implements Serializable {
     @CreationTimestamp
     private Timestamp timestamp;
 }
-
+//머지용
