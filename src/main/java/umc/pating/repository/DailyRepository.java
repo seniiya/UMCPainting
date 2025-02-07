@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import umc.pating.entity.Daily;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,5 +17,6 @@ public interface DailyRepository extends JpaRepository<Daily, Long> {
     @Query("SELECT d FROM Daily d WHERE d.user.id = :userId AND d.dailyDayRecording = :date")
     Optional<Daily> findByUserIdAndDailyDayRecording(@Param("userId") Long userId, @Param("date") LocalDate date);
 
+    List<Daily> findByUserIdAndDailyDayRecordingBetween(Long userId, LocalDate startDate, LocalDate endDate);
 
 }

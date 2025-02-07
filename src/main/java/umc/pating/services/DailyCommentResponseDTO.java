@@ -5,11 +5,11 @@ import umc.pating.entity.DailyComment;
 
 @Getter
 public class DailyCommentResponseDTO {
-    private Long id;
-    private String title;
-    private String content;
-    private int x;
-    private int y;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final int x;
+    private final int y;
 
     public DailyCommentResponseDTO(DailyComment dailyComment) {
         this.id = dailyComment.getId();
