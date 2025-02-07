@@ -5,7 +5,6 @@ import lombok.*;
 import umc.pating.entity.common.BaseEntity;
 import umc.pating.entity.enums.StressType;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,14 +34,5 @@ public class MoodRecord extends BaseEntity {
 
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }

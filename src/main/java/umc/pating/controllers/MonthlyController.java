@@ -18,14 +18,13 @@ import java.util.List;
 public class MonthlyController {
     private final MonthlyService monthlyService;
 
-//    @GetMapping("")
-//    public ResponseEntity<List<MonthlyResponseDTO>> getMonthly (
-//            @RequestParam Long userId,
-//            @RequestParam Integer year,
-//            @RequestParam Integer month
-//    )
-//    {
-//        ResponseEntity.ok(monthlyService.getMonthly(userId, year, month));
-//    }
+    @GetMapping("")
+    public ResponseEntity<List<MonthlyResponseDTO>> getMonthly (
+            @RequestParam Long userId,
+            @RequestParam Integer year,
+            @RequestParam Integer month
+    ) {
+        return ResponseEntity.ok(monthlyService.getMonthly(userId, year, month));
+    }
 
 }
