@@ -1,6 +1,6 @@
 package umc.pating.entity.enums;
 
-public enum UserStatus {
+public enum Status {
     ELEMENT("초등학생"),
     MIDDLE("중학생"),
     HIGH("고등학생"),
@@ -11,7 +11,7 @@ public enum UserStatus {
 
     private final String description;
 
-    UserStatus(String description) {
+    Status(String description) {
         this.description = description;
     }
 

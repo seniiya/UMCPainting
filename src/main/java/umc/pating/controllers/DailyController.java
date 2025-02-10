@@ -19,7 +19,7 @@ public class DailyController {
     // 조회
     @GetMapping("/get")
     public ResponseEntity<DailyResponseDTO> getDaily(
-            @RequestParam Long userId,
+            @RequestParam("userId") Long userId,
             @RequestParam String date
     ) {
         LocalDate localDate = LocalDate.parse(date);
