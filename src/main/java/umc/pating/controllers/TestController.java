@@ -2,9 +2,10 @@ package umc.pating.controllers;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import umc.pating.auth.PrincipalDetails;
 import umc.pating.service.TestService;
 import umc.pating.services.TestRequestDTO;
 import umc.pating.services.TestResponseDTO;
@@ -20,14 +21,19 @@ public class TestController {
     // 조회
     @GetMapping("/get")
     public ResponseEntity<TestResponseDTO> getTest(
-            @RequestParam Long userId,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestParam String date
     ) {
+//        if (principalDetails == null) {
+//            return ResponseEntity.status(401).build();
+//        }
         LocalDate localDate = LocalDate.parse(date);
+        Long userId = principalDetails.getUser().getId();
+
         return ResponseEntity.ok(testService.getTest(userId, localDate));
+
     }
 
-    // 저장 수정 - 여러 개 작성 가능한데 ..
     @PostMapping("/save")
     public ResponseEntity<TestResponseDTO> saveTest(
             @RequestBody TestRequestDTO requestDTO

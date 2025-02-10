@@ -1,6 +1,5 @@
 package umc.pating.service;
 
-import jdk.jfr.Frequency;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,19 +54,26 @@ public class TestService {
             test = existingTest.get();
 
             // null 아닐 때만 수정
+
+            if (request.getTitle() != null) {
+                test.setTitle(request.getTitle());
+            }
+            if (request.getDrawing() != null && test.getDrawing().trim().isEmpty()) {
+                test.setDrawing(request.getDrawing());
+            }
             if (request.getDrawingTime() != null) {
                 test.setDrawingTime(request.getDrawingTime());
             }
             if (request.getScore() != null) {
                 test.setScore(request.getScore());
             }
-            if (request.getFeedback() != null) {
+            if (request.getFeedback() != null && test.getDrawing().trim().isEmpty()) {
                 test.setFeedback(request.getFeedback());
             }
-            if (request.getDifficultIssue() != null) {
+            if (request.getDifficultIssue() != null && test.getDrawing().trim().isEmpty()) {
                 test.setDifficultIssue(request.getDifficultIssue());
             }
-            if (request.getGoodIssue() != null) {
+            if (request.getGoodIssue() != null && test.getDrawing().trim().isEmpty()) {
                 test.setGoodIssue(request.getGoodIssue());
             }
             if (request.getAddTime() != null) {
@@ -79,10 +85,10 @@ public class TestService {
             if (request.getTodayMood() != null) {
                 test.setTodayMood(request.getTodayMood());
             }
-            if (request.getMoodDetail() != null) {
+            if (request.getMoodDetail() != null && test.getDrawing().trim().isEmpty()) {
                 test.setMoodDetail(request.getMoodDetail());
             }
-            if (request.getQuestion() != null) {
+            if (request.getQuestion() != null && test.getDrawing().trim().isEmpty()) {
                 test.setQuestion(request.getQuestion());
             }
 
@@ -91,6 +97,7 @@ public class TestService {
             test = Test.builder()
                     .user(user)
                     .testDayRecording(request.getTestDayRecording())
+                    .title(request.getTitle())
                     .drawing(request.getDrawing())
                     .drawingTime(request.getDrawingTime())
                     .score(request.getScore())
