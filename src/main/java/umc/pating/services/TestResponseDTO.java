@@ -16,6 +16,7 @@ public class TestResponseDTO {
 
     private Long id;
     private LocalDate testDayRecording;
+    private String title;
     private String drawing;
     private String drawingTime;
     private Integer score;
@@ -33,6 +34,7 @@ public class TestResponseDTO {
     public TestResponseDTO(Test test) {
         this.id = test.getId();
         this.testDayRecording = test.getTestDayRecording();
+        this.title = test.getTitle();
         this.drawing = test.getDrawing();
         this.drawingTime = test.getDrawingTime();
         this.score = test.getScore();
