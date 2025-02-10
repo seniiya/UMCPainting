@@ -3,8 +3,8 @@ package umc.pating.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import umc.pating.entity.enums.ExamCategory;
-import umc.pating.entity.enums.UserStatus;
+import umc.pating.entity.enums.Category;
+import umc.pating.entity.enums.Status;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -37,10 +37,10 @@ public class User implements Serializable {
     private Integer birthYear;
 
     @Enumerated(EnumType.STRING) //유저의 신분
-    private UserStatus status;
+    private Status status;
 
     @Enumerated(EnumType.STRING) //유저의 입시유형
-    private ExamCategory category;
+    private Category category;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -56,4 +56,3 @@ public class User implements Serializable {
     @CreationTimestamp
     private Timestamp timestamp;
 }
-//머지용
