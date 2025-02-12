@@ -34,7 +34,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         System.out.println("✅ [oAuth2LoginSuccessHandler] 실행됨");
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         String username = principalDetails.getUsername();
-        System.out.println("✅ OAuth2 로그인 성공 - 사용자: " + principalDetails.getUsername());
+        System.out.println("✅ OAuth2 로그인 성공 - 사용자: " + principalDetails.getUsername() + username);
 
 
         List<String> roles = principalDetails.getAuthorities().stream()
@@ -47,12 +47,19 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String jwtToken = jwtTokenProvider.createToken(principalDetails.getUsername(), roles);
         System.out.println(" JWT 발급 성공: " + jwtToken); // jwt 생성 확인
 
-        // ✅ JWT를 Response Header에 추가
-        response.addHeader("Authorization", "Bearer " + jwtToken);
+        // ✅ JSON 형태로 토큰 반환
+        Map<String, String> tokenResponse = new HashMap<>();
+        tokenResponse.put("token", jwtToken);
 
-
-        // 클라이언트에게 JWT 응답
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(jwtToken));
+        response.getWriter().write(objectMapper.writeValueAsString(tokenResponse));
+
+//        // ✅ JWT를 Response Header에 추가
+//        response.addHeader("Authorization", "Bearer " + jwtToken);
+//
+//
+//        // 클라이언트에게 JWT 응답
+//        response.setContentType("application/json;charset=UTF-8");
+//        response.getWriter().write(objectMapper.writeValueAsString(jwtToken));
     }
 }

@@ -53,6 +53,8 @@ public class User implements Serializable {
     private String provider;  // ✅ 소셜 로그인 제공자 (e.g., google, facebook, naver)
     private String providerId;  // ✅ 소셜 로그인 제공자의 사용자 ID
 
+    private String refreshToken;
+
     @CreationTimestamp
     private Timestamp timestamp;
 }

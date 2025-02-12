@@ -1,9 +1,6 @@
 package umc.pating.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -60,13 +57,13 @@ public class SecurityConfig {
 //                    .defaultSuccessUrl("/");
 //        });
 
-        http.oauth2Login(form -> {
-            form
-                    .loginPage("/loginForm")
-                    .userInfoEndpoint(userInfoEndpointConfig -> {
-                        userInfoEndpointConfig.userService(principalOauth2UserService);
-                    }); // 구글 로그인 완료된 뒤의 후처리가 필요함. Tip. 코드X(엑세스토큰 + 사용자프로필정보 O)
-        });
+//        http.oauth2Login(form -> {
+//            form
+//                    .loginPage("/loginForm")
+//                    .userInfoEndpoint(userInfoEndpointConfig -> {
+//                        userInfoEndpointConfig.userService(principalOauth2UserService);
+//                    }); // 구글 로그인 완료된 뒤의 후처리가 필요함. Tip. 코드X(엑세스토큰 + 사용자프로필정보 O)
+//        });
 
 
 
@@ -74,8 +71,8 @@ public class SecurityConfig {
         http.oauth2Login(oauth2 -> oauth2
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(principalOauth2UserService))
-//                .successHandler(oAuth2LoginSuccessHandler) // 로그인 성공 시 JWT 생성 및 반환
-                        .defaultSuccessUrl("/", true));
+                .successHandler(oAuth2LoginSuccessHandler)); // 로그인 성공 시 JWT 생성 및 반환
+//                        .defaultSuccessUrl("/", true));
 
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

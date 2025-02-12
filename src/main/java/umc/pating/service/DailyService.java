@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import umc.pating.aws.s3.AmazonS3Manager;
 import umc.pating.entity.Daily;
 import umc.pating.entity.User;
 import umc.pating.repository.DailyRepository;
@@ -13,6 +14,7 @@ import umc.pating.repository.UserRepository;
 import umc.pating.services.DailyRequestDTO;
 import umc.pating.services.DailyResponseDTO;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -22,7 +24,7 @@ import java.util.Optional;
 public class DailyService {
     private final DailyRepository dailyRepository;
     private final UserRepository userRepository;
-//    private final AwsS3Service awsS3Service;
+    private final AmazonS3Manager amazonS3Manager;
 
 
     // daily 기록 조회
@@ -36,7 +38,7 @@ public class DailyService {
 
 
     // Daily 기록 작성 + 수정
-    public DailyResponseDTO saveDaily(Long userId, DailyRequestDTO request) {
+    public DailyResponseDTO saveDaily(Long userId, DailyRequestDTO request) throws IOException {
         System.out.println("🔍 userId from request: " + request.getUserId()); // 디버깅 로그 추가
         System.out.println("🔍 userId from parameter: " + userId);
 
@@ -50,10 +52,10 @@ public class DailyService {
         Daily daily;
 
         // S3에 이미지 업로드 (파일이 있으면)
-//        String drawingUrl = null;
-//        if (request.getDrawing() != null && !request.getDrawing().isEmpty()) {
-//            drawingUrl = awsS3Service.uploadFile(request.getDrawing()); // S3 업로드 후 URL 반환
-//        }
+        String drawingUrl = null;
+        if (request.getDrawing() != null && !request.getDrawing().isEmpty()) {
+            drawingUrl = amazonS3Manager.uploadFile(request.getDrawing()); // S3 업로드 후 URL 반환
+        }
 
         if (existingDaily.isPresent()) {
             // 기존 데이터가 있으면 update
@@ -63,9 +65,9 @@ public class DailyService {
             if (request.getDrawing() != null && daily.getDrawing().trim().isEmpty()) {
                 daily.setDrawing(request.getDrawingTime());
             }
-//            if (drawingUrl != null) {
-//                daily.setDrawing(drawingUrl);
-//            }
+            if (drawingUrl != null) {
+                daily.setDrawing(drawingUrl);
+            }
             if (request.getDrawingTime() != null) {
                 daily.setDrawingTime(request.getDrawingTime());
             }
@@ -93,8 +95,7 @@ public class DailyService {
             daily = Daily.builder()
                     .user(user)
                     .dailyDayRecording(request.getDailyDayRecording())
-                    .drawing(request.getDrawing())
-//                    .drawing(drawingUrl)
+                    .drawing(String.valueOf(request.getDrawing()))
                     .drawingTime(request.getDrawingTime())
                     .feedback(request.getFeedback())
                     .difficultIssue(request.getDifficultIssue())

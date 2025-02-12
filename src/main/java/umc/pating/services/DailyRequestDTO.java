@@ -12,8 +12,7 @@ import java.time.LocalDate;
 public class DailyRequestDTO {
     private Long userId;
     private LocalDate dailyDayRecording;
-    private String drawing;
-//    private MultipartFile drawing;
+    private MultipartFile drawing;
     private String drawingTime;
     private String feedback;
     private String difficultIssue;
