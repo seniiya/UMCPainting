@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class TestRequestDTO {
     private Long userId;
     private LocalDate testDayRecording;
+    private String title;
     private String drawing;
     private String drawingTime;
     private Integer score;
