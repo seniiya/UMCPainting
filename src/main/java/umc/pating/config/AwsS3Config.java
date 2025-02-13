@@ -28,14 +28,14 @@ public class AwsS3Config {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+    @Value(("${cloud.aws.s3.bucket}"))
+    private String bucket;
+
     @PostConstruct
     public void init() {
         this.awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        System.out.println("📌 AWS S3 버킷 이름: " + bucket);
     }
-
-    @Value(("${cloud.aws.s3.bucket"))
-    private String bucket;
-
     @Value("${cloud.aws.s3.path.grimiDrawing}")
     private String grimiDrawing;
 
