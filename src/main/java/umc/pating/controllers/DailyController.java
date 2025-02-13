@@ -1,5 +1,8 @@
 package umc.pating.controllers;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +44,21 @@ public class DailyController {
     // 작성 (이미지 포함)
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     public ResponseEntity<DailyResponseDTO> saveDaily(
-            @RequestPart("data") DailyRequestDTO requestDTO, // JSON 데이터
+            @RequestPart("data") String requestData, // JSON 데이터
             @RequestPart(value = "drawing", required = false) MultipartFile drawing // 파일 (선택적)
     ) throws IOException {
+        System.out.println("✅ [saveDaily] API 호출됨");
+        System.out.println("📌 받은 JSON 데이터: " + requestData);
+
+        // JSON 데이터를 객체로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // LocalDate 지원 추가
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DailyRequestDTO requestDTO = objectMapper.readValue(requestData, DailyRequestDTO.class);
+
+
         requestDTO.setDrawing(drawing); // DTO에 파일 설정
+
         return ResponseEntity.ok(dailyService.saveDaily(requestDTO.getUserId(), requestDTO));
     }
 

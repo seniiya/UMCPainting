@@ -22,9 +22,42 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("인증된 유저 정보를 찾을 수 없습니다."));
     }
 
+//    // 닉네임 수정
+//    public UserResponseDTO updateNickname(Long userId, String nickname) {
+//        User user = getCurrentUser(userId);
+//        user.setNickname(nickname);
+//        userRepository.save(user);
+//        return new UserResponseDTO(user);
+//    }
+//
+//    // 출생년도 수정
+//    public UserResponseDTO updateBirthYear(Long userId, Integer birthYear) {
+//        User user = getCurrentUser(userId);
+//        user.setBirthYear(birthYear);
+//        userRepository.save(user);
+//        return new UserResponseDTO(user);
+//    }
+//
+//    // 신분 수정
+//    public UserResponseDTO updateStatus(Long userId, Status status) {
+//        User user = getCurrentUser(userId);
+//        user.setStatus(status);
+//        userRepository.save(user);
+//        return new UserResponseDTO(user);
+//    }
+//
+//    // 입시유형 수정
+//    public UserResponseDTO updateCategory(Long userId, Category category) {
+//        User user = getCurrentUser(userId);
+//        user.setCategory(category);
+//        userRepository.save(user);
+//        return new UserResponseDTO(user);
+//    }
+
     // 닉네임 수정
     public UserResponseDTO updateNickname(Long userId, String nickname) {
-        User user = getCurrentUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setNickname(nickname);
         userRepository.save(user);
         return new UserResponseDTO(user);
@@ -32,7 +65,8 @@ public class UserService {
 
     // 출생년도 수정
     public UserResponseDTO updateBirthYear(Long userId, Integer birthYear) {
-        User user = getCurrentUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setBirthYear(birthYear);
         userRepository.save(user);
         return new UserResponseDTO(user);
@@ -40,7 +74,8 @@ public class UserService {
 
     // 신분 수정
     public UserResponseDTO updateStatus(Long userId, Status status) {
-        User user = getCurrentUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setStatus(status);
         userRepository.save(user);
         return new UserResponseDTO(user);
@@ -48,7 +83,8 @@ public class UserService {
 
     // 입시유형 수정
     public UserResponseDTO updateCategory(Long userId, Category category) {
-        User user = getCurrentUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setCategory(category);
         userRepository.save(user);
         return new UserResponseDTO(user);

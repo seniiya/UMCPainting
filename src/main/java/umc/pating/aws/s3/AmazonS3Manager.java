@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import umc.pating.config.AwsS3Config;
@@ -23,12 +24,15 @@ public class AmazonS3Manager{
 
     private final Uuid uuid;
 
-    public String generateReviewKeyName(Uuid uuid) {
-        return awsS3Config.getGrimiDrawing() + '/' + uuid.getUuid();
-    }
+    @Value("${cloud.aws.s3.path.grimiDrawing}")
+    private String grimiDrawing;
+
+//    public String generateReviewKeyName(Uuid uuid) {
+//        return awsS3Config.getGrimiDrawing() + '/' + uuid.getUuid();
+//    }
 
     public String uploadFile(MultipartFile file) throws IOException {
-        String fileName = "daily/" + uuid.randomUuID() + "_" + file.getOriginalFilename();
+        String fileName = grimiDrawing + uuid.randomUuID() + "_" + file.getOriginalFilename();
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());

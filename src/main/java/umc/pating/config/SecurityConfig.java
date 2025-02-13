@@ -13,12 +13,6 @@ import umc.pating.auth.JwtAuthenticationFilter;
 import umc.pating.auth.OAuth2LoginSuccessHandler;
 import umc.pating.config.oauth.PrincipalOauth2UserService;
 
-// 구글 로그인 완료된 뒤의 후처리가 필요함.
-// 1. 코드받기(인증됨)
-// 2. 엑세스 토큰(사용자 정보에 접근할 권한받음)
-// 3. 사용자 프로필 정보를 가져오고
-// 4-1. 그 정보를 토대로 회원가입을 자동으로 진행시키기도 함
-// 4-2. (이메일, 전화번호, 이름, 아이디) 쇼핑몰 -> (집주소), 백화점몰 -> (vip등급, 일반등급)
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // secured 어노테이션 활성화, preAuthorize 어노테이션 활성화
@@ -38,9 +32,26 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter, OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) throws Exception {
 //        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 
-        http.csrf(csrf -> csrf.disable());
+        System.out.println("🚀 SecurityFilterChain 실행됨! 🔥");
+        http.csrf(csrf -> {
+            System.out.println("📌 CSRF 설정: 비활성화됨");
+            csrf.disable();
+        });
+
+        http.cors(cors -> {
+            System.out.println("📌 CORS 설정 적용됨");
+            cors.configurationSource(request -> {
+                org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+                config.setAllowedOrigins(java.util.List.of("*")); // 모든 도메인 허용
+                config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type"));
+                config.setExposedHeaders(java.util.List.of("Authorization")); // Authorization 헤더 노출
+                return config;
+            });
+        });
 
         http.authorizeHttpRequests(authorize -> {
+            System.out.println("✅ 인증 및 권한 설정 적용됨");
             authorize
                     .requestMatchers(HttpMethod.GET, "/record/**").authenticated()  // GET 요청도 인증 필요
                     .requestMatchers("/user/**").authenticated()
@@ -67,14 +78,29 @@ public class SecurityConfig {
 
 
 
-        // 로그인 시 토큰 생성 코드
-        http.oauth2Login(oauth2 -> oauth2
-                .userInfoEndpoint(userInfo -> userInfo
-                        .userService(principalOauth2UserService))
-                .successHandler(oAuth2LoginSuccessHandler)); // 로그인 성공 시 JWT 생성 및 반환
-//                        .defaultSuccessUrl("/", true));
+//        // 로그인 시 토큰 생성 코드
+//        http.oauth2Login(oauth2 -> oauth2
+//                .userInfoEndpoint(userInfo -> userInfo
+//                        .userService(principalOauth2UserService))
+//                .successHandler(oAuth2LoginSuccessHandler)); // 로그인 성공 시 JWT 생성 및 반환
+////                        .defaultSuccessUrl("/", true));
+//
+//
+//        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        http.oauth2Login(oauth2 -> {
+            System.out.println("✅ OAuth2 로그인 설정 적용됨");
+            oauth2
+                    .userInfoEndpoint(userInfo -> {
+                        System.out.println("🔍 사용자 정보 엔드포인트 설정됨");
+                        userInfo
+                                .userService(principalOauth2UserService);
+                        System.out.println("✅ OAuth2LoginSuccessHandler가 등록됨");
+                    })
+                    .successHandler(oAuth2LoginSuccessHandler);
+        }); // 로그인 성공 시 JWT 생성 및 반환
 
+        System.out.println("✅ JWT 인증 필터 추가됨");
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
