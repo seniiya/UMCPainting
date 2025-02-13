@@ -75,7 +75,7 @@ public class SecurityConfig {
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(principalOauth2UserService))
 //                .successHandler(oAuth2LoginSuccessHandler) // 로그인 성공 시 JWT 생성 및 반환
-                        .defaultSuccessUrl("/", true));
+                .defaultSuccessUrl("/", true));
 
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -27,32 +27,37 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void onAuthenticationSuccess( HttpServletRequest request,
+    public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         FilterChain chain,
                                         Authentication authentication) throws IOException, ServletException {
-        System.out.println("✅ [oAuth2LoginSuccessHandler] 실행됨");
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        String username = principalDetails.getUsername();
-        System.out.println("✅ OAuth2 로그인 성공 - 사용자: " + principalDetails.getUsername());
+        System.out.println("✅ [OAuth2LoginSuccessHandler] 실행됨!!");
 
+        if (!(authentication.getPrincipal() instanceof PrincipalDetails)) {
+            System.out.println("❌ PrincipalDetails 타입이 아님!");
+            return;
+        }
+
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("✅ OAuth2 로그인 성공 - 사용자: " + principalDetails.getUsername());
 
         List<String> roles = principalDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         System.out.println("✅ 사용자 권한 목록: " + roles);
 
+        String jwtToken = jwtTokenProvider.generateToken(principalDetails.getUsername(), roles);
+        System.out.println("✅ JWT 발급 성공: " + jwtToken);
 
-        // JWT 생성
-        String jwtToken = jwtTokenProvider.createToken(principalDetails.getUsername(), roles);
-        System.out.println(" JWT 발급 성공: " + jwtToken); // jwt 생성 확인
+        if (jwtToken == null || jwtToken.isEmpty()) {
+            throw new RuntimeException("❌❌❌ JWT 생성 실패!!");
+        }
 
         // ✅ JWT를 Response Header에 추가
         response.addHeader("Authorization", "Bearer " + jwtToken);
-
-
-        // 클라이언트에게 JWT 응답
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(jwtToken));
+
     }
+
 }
