@@ -26,7 +26,6 @@ public class DailyService {
     private final UserRepository userRepository;
     private final AmazonS3Manager amazonS3Manager;
 
-
     // daily 기록 조회
     @Transactional(readOnly = true)
     public DailyResponseDTO getDaily(Long userId, LocalDate date) {
@@ -49,10 +48,6 @@ public class DailyService {
         }
 
         return new DailyResponseDTO(daily);
-//        System.out.println("🔍 userId: " + userId + ", date: " + date); // 디버깅 로그 추가
-//        Daily daily = dailyRepository.findByUserIdAndDailyDayRecording(userId, date)
-//                .orElseThrow(() -> new RuntimeException("해당 날짜의 기록이 없습니다."));
-//        return new DailyResponseDTO(daily);
     }
 
 
@@ -90,22 +85,22 @@ public class DailyService {
             if (request.getDrawingTime() != null) {
                 daily.setDrawingTime(request.getDrawingTime());
             }
-            if (request.getFeedback() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getFeedback() != null && daily.getFeedback().trim().isEmpty()) {
                 daily.setFeedback(request.getFeedback());
             }
-            if (request.getDifficultIssue() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getDifficultIssue() != null && daily.getDifficultIssue().trim().isEmpty()) {
                 daily.setDifficultIssue(request.getDifficultIssue());
             }
-            if (request.getGoodIssue() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getGoodIssue() != null && daily.getGoodIssue().trim().isEmpty()) {
                 daily.setGoodIssue(request.getGoodIssue());
             }
             if (request.getTodayMood() != null) {
                 daily.setTodayMood(request.getTodayMood());
             }
-            if (request.getMoodDetail() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getMoodDetail() != null && daily.getMoodDetail().trim().isEmpty()) {
                 daily.setMoodDetail(request.getMoodDetail());
             }
-            if (request.getQuestion() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getQuestion() != null && daily.getQuestion().trim().isEmpty()) {
                 daily.setQuestion(request.getQuestion());
             }
 
