@@ -29,6 +29,7 @@ public class DailyController {
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestParam String date
     ) {
+        System.out.println("get 함수 실행");
         if (principalDetails == null) {
             System.out.println("❌ AuthenticationPrincipal is NULL (JWT 인증 실패)");
             return ResponseEntity.status(401).build();
@@ -36,10 +37,13 @@ public class DailyController {
         LocalDate localDate = LocalDate.parse(date);
         Long userId = principalDetails.getUser().getId();
 
+        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, localDate);
+
+        // ✅ 이미지 URL 확인 로그
+        System.out.println("✅ 이미지 URL: " + dailyResponseDTO.getDrawing());
+
         return ResponseEntity.ok(dailyService.getDaily(userId, localDate));
-
     }
-
 
     // 작성 (이미지 포함)
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
@@ -55,7 +59,6 @@ public class DailyController {
         objectMapper.registerModule(new JavaTimeModule()); // LocalDate 지원 추가
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DailyRequestDTO requestDTO = objectMapper.readValue(requestData, DailyRequestDTO.class);
-
 
         requestDTO.setDrawing(drawing); // DTO에 파일 설정
 
