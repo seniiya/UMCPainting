@@ -30,10 +30,29 @@ public class DailyService {
     // daily 기록 조회
     @Transactional(readOnly = true)
     public DailyResponseDTO getDaily(Long userId, LocalDate date) {
-        System.out.println("🔍 userId: " + userId + ", date: " + date); // 디버깅 로그 추가
+        System.out.println("✅ [DailyService] getDaily 실행 - userId: " + userId + ", date: " + date);
+
         Daily daily = dailyRepository.findByUserIdAndDailyDayRecording(userId, date)
-                .orElseThrow(() -> new RuntimeException("해당 날짜의 기록이 없습니다."));
+                .orElseThrow(() -> {
+                    System.out.println("❌ 해당 날짜의 Daily 기록 없음!"); // ❌ 데이터가 없는 경우 로그 추가
+                    return new RuntimeException("해당 날짜의 기록이 없습니다.");
+                });
+
+        // ✅ 조회된 데이터 확인
+        System.out.println("✅ 조회된 Daily 데이터: " + daily);
+
+        // ✅ 이미지 URL 확인
+        if (daily.getDrawing() == null || daily.getDrawing().isEmpty()) {
+            System.out.println("⚠️ 저장된 이미지가 없음!");
+        } else {
+            System.out.println("✅ 저장된 이미지 URL: " + daily.getDrawing());
+        }
+
         return new DailyResponseDTO(daily);
+//        System.out.println("🔍 userId: " + userId + ", date: " + date); // 디버깅 로그 추가
+//        Daily daily = dailyRepository.findByUserIdAndDailyDayRecording(userId, date)
+//                .orElseThrow(() -> new RuntimeException("해당 날짜의 기록이 없습니다."));
+//        return new DailyResponseDTO(daily);
     }
 
 
