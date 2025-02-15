@@ -70,17 +70,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(tokenResponse));
 
-//        // JWT 생성
-//        String jwtToken = jwtTokenProvider.createToken(principalDetails.getUsername(), roles);
-//        System.out.println(" JWT 발급 성공: " + jwtToken); // jwt 생성 확인
-//
-//        // ✅ JSON 형태로 토큰 반환
-//        Map<String, String> tokenResponse = new HashMap<>();
-//        tokenResponse.put("token", jwtToken);
-//
-//        response.setContentType("application/json;charset=UTF-8");
-//        response.getWriter().write(objectMapper.writeValueAsString(tokenResponse));
-
 //        // ✅ JWT를 Response Header에 추가
 //        response.addHeader("Authorization", "Bearer " + jwtToken);
 //
