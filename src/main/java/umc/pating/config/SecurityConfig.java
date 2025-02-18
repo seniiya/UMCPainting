@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import umc.pating.auth.JwtAuthenticationFilter;
@@ -17,6 +18,19 @@ import umc.pating.auth.OAuth2LoginSuccessHandler;
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // secured 어노테이션 활성화, preAuthorize 어노테이션 활성화
 public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/auth/kakao").permitAll()  // ✅ 인증 없이 접근 가능
+                        .anyRequest().authenticated()  // 나머지 요청은 인증 필요
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // 세션 사용 X
+
+        return http.build();
+    }
+
 
 //    @Autowired
 //    private PrincipalOauth2UserService principalOauth2UserService;
