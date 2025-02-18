@@ -62,7 +62,7 @@ public class AuthController {
         System.out.println("✅ JWT 발급 완료: " + jwtToken);
 
         KakaoTokenResponseDTO responseDTO = new KakaoTokenResponseDTO(jwtToken, user.getUserId());
+        System.out.println("✅ 전송한 정보 : " + user.getUserName() + "의 사용자 ID: " + user.getUserId());
         return ResponseEntity.ok(new KakaoTokenResponseDTO(jwtToken, user.getUserId()));
     }
-
 }
