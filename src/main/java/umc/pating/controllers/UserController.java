@@ -19,7 +19,8 @@ public class UserController {
             @PathVariable Long userId,
             @RequestBody UserRequestDTO requestDTO
     ) {
-        return ResponseEntity.ok(userService.updateNickname(userId, requestDTO.getNickname()));
+        UserResponseDTO responseDTO = userService.updateNickname(userId, requestDTO.getNickname());
+        return ResponseEntity.ok(responseDTO);
     }
 
     // 출생년도 수정
