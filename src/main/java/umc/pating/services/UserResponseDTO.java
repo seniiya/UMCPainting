@@ -6,13 +6,15 @@ import umc.pating.entity.User;
 import umc.pating.entity.enums.Category;
 import umc.pating.entity.enums.Status;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class UserResponseDTO {
     private String nickname;
     private Integer birthYear;
     private Status status;
-    private Category category;
+    private List<Category> category;
 
     public UserResponseDTO(User user) {
         this.nickname = user.getNickname();
