@@ -26,7 +26,6 @@ public class DailyService {
     private final UserRepository userRepository;
     private final AmazonS3Manager amazonS3Manager;
 
-
     // daily 기록 조회
     @Transactional(readOnly = true)
     public DailyResponseDTO getDaily(Long userId, LocalDate date) {
@@ -49,10 +48,6 @@ public class DailyService {
         }
 
         return new DailyResponseDTO(daily);
-//        System.out.println("🔍 userId: " + userId + ", date: " + date); // 디버깅 로그 추가
-//        Daily daily = dailyRepository.findByUserIdAndDailyDayRecording(userId, date)
-//                .orElseThrow(() -> new RuntimeException("해당 날짜의 기록이 없습니다."));
-//        return new DailyResponseDTO(daily);
     }
 
 

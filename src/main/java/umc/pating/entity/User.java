@@ -8,6 +8,7 @@ import umc.pating.entity.enums.Status;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,8 +40,9 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING) //유저의 신분
     private Status status;
 
-    @Enumerated(EnumType.STRING) //유저의 입시유형
-    private Category category;
+    @ElementCollection(fetch = FetchType.LAZY)  // 🔥 여러 개의 카테고리를 저장할 수 있도록 변경
+    @Enumerated(EnumType.STRING)
+    private List<Category> category;  // ✅ 단일 Category → List<Category>로 변경
 
     @Column(nullable = false, unique = true)
     private String email;
