@@ -5,12 +5,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import umc.pating.config.oauth.provider.JwtTokenProvider;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/token")
@@ -19,18 +18,14 @@ public class TokenController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("/refresh")
-    public ResponseEntity<?> refreshAuth(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = request.getHeader("Refresh");
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestHeader("Refresh-Token") String refreshToken) {
+        String newAccessToken = jwtTokenProvider.regenerateAccessToken(refreshToken);
 
-        if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
-            String userEmail = jwtTokenProvider.getAuthentication(refreshToken).getName();
-            String newAccessToken = jwtTokenProvider.createToken(userEmail, List.of("ROLE_USER"));
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("accessToken", newAccessToken);
+        tokens.put("refreshToken", refreshToken); // 기존 refreshToken 그대로 유지
 
-            response.addHeader("Authorization", "Bearer " + newAccessToken);
-            return ResponseEntity.ok("NEW JWT ISSUED");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("INVALID REFRESH TOKEN");
+        return ResponseEntity.ok(tokens);
     }
 }
-

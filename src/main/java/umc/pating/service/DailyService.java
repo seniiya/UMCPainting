@@ -85,22 +85,22 @@ public class DailyService {
             if (request.getDrawingTime() != null) {
                 daily.setDrawingTime(request.getDrawingTime());
             }
-            if (request.getFeedback() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getFeedback() != null && daily.getFeedback().trim().isEmpty()) {
                 daily.setFeedback(request.getFeedback());
             }
-            if (request.getDifficultIssue() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getDifficultIssue() != null && daily.getDifficultIssue().trim().isEmpty()) {
                 daily.setDifficultIssue(request.getDifficultIssue());
             }
-            if (request.getGoodIssue() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getGoodIssue() != null && daily.getGoodIssue().trim().isEmpty()) {
                 daily.setGoodIssue(request.getGoodIssue());
             }
             if (request.getTodayMood() != null) {
                 daily.setTodayMood(request.getTodayMood());
             }
-            if (request.getMoodDetail() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getMoodDetail() != null && daily.getMoodDetail().trim().isEmpty()) {
                 daily.setMoodDetail(request.getMoodDetail());
             }
-            if (request.getQuestion() != null && daily.getDrawing().trim().isEmpty()) {
+            if (request.getQuestion() != null && daily.getQuestion().trim().isEmpty()) {
                 daily.setQuestion(request.getQuestion());
             }
 

@@ -1,12 +1,13 @@
 package umc.pating.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import umc.pating.entity.DailyComment;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface DailyCommentRepository extends JpaRepository<DailyComment, Long> {
 
 
