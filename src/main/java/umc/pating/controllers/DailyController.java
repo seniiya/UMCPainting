@@ -64,6 +64,4 @@ public class DailyController {
 
         return ResponseEntity.ok(dailyService.saveDaily(requestData.getUserId(), requestData));
     }
-
-
 }
