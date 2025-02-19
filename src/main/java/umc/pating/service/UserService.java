@@ -49,6 +49,10 @@ public class UserService {
     public UserResponseDTO updateCategory(Long userId, List<Category> category) {
         User user = getUserById(userId);
         user.setCategory(category);
+
+        userRepository.save(user);  // ✅ 변경된 값 저장
+
+        System.out.println("✅ 저장된 카테고리: " + user.getCategory());  // 🔥 디버깅 로그 추가
         return new UserResponseDTO(userRepository.save(user));
 
     }

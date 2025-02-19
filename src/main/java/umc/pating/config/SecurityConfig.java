@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/kakao", "/user/**", "record/daily/**", "record/monthly/**", "record/test/**").permitAll()  // ✅ 인증 없이 접근 가능
+                        .requestMatchers("/auth/kakao", "/user/**", "/record/daily/**", "/record/monthly/**", "/record/test/**").permitAll()  // ✅ 인증 없이 접근 가능
                         .anyRequest().authenticated()  // 나머지 요청은 인증 필요
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // 세션 사용 X
