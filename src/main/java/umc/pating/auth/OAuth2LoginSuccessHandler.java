@@ -29,7 +29,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Override
     public void onAuthenticationSuccess( HttpServletRequest request,
                                         HttpServletResponse response,
-                                        FilterChain chain,
                                         Authentication authentication) throws IOException, ServletException {
         System.out.println("✅ [oAuth2LoginSuccessHandler] 실행됨");
         if (authentication == null) {
