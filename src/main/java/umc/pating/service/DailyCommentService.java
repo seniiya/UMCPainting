@@ -20,7 +20,7 @@ public class DailyCommentService {
     private final DailyCommentRepository dailyCommentRepository;
     private final DailyRepository dailyRepository;
 
-    // 특정 daily 댓글 조회 - 나 근데 여기 코드 이해가 전혀 안됨
+    // 특정 daily 댓글 조회
     public List<DailyCommentResponseDTO> getDailyComments(Long dailyId) {
         List<DailyComment> comments = dailyCommentRepository.findByDailyId(dailyId);
         return comments.stream().map(DailyCommentResponseDTO::new).collect(Collectors.toList());
@@ -31,13 +31,22 @@ public class DailyCommentService {
         Daily daily = dailyRepository.findById(dailyId)
                 .orElseThrow(() -> new RuntimeException("해당 Daily 기록 존재하지 않음"));
 
-        DailyComment dailyComment = DailyComment.builder()
-                .daily(daily)
-                .title(request.getTitle())
-                .content(request.getContent())
-                .x(request.getX())
-                .y(request.getY())
-                .build();
+        // 기존의 동일한 좌표(x, y)의 코멘트가 있는지 확인
+        DailyComment dailyComment = dailyCommentRepository.findByDailyIdAndXAndY(dailyId, request.getX(), request.getY())
+                .orElseGet(() -> DailyComment.builder()
+                        .daily(daily)
+                        .x(request.getX())
+                        .y(request.getY())
+                        .build());
+
+        // null 값이 전달되지 않은 경우에만 업데이트
+        if (request.getTitle() != null) {
+            dailyComment.setTitle(request.getTitle());
+        }
+        if (request.getContent() != null) {
+            dailyComment.setContent(request.getContent());
+        }
+
 
         dailyCommentRepository.save(dailyComment);
         return new DailyCommentResponseDTO(dailyComment);

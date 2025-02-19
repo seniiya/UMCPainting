@@ -24,7 +24,7 @@ public class DailyCommentController {
     }
 
     // 특정 daily 댓글 저장
-    @PostMapping("/{dailyId}")
+    @PostMapping("/{dailyId}/save")
     public ResponseEntity<DailyCommentResponseDTO> saveDailyComment(
             @PathVariable Long dailyId,
             @RequestBody DailyCommentRequestDTO request

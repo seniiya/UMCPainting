@@ -1,39 +1,65 @@
 package umc.pating.controllers;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import umc.pating.auth.PrincipalDetails;
 import umc.pating.service.DailyService;
 import umc.pating.services.DailyRequestDTO;
 import umc.pating.services.DailyResponseDTO;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/record/daily") // api 겹쳐서 수정 어디가 / record/daily 겹치지
+@RequestMapping("/record/daily")
 public class DailyController {
     private final DailyService dailyService;
 
     // 조회
     @GetMapping("/get")
     public ResponseEntity<DailyResponseDTO> getDaily(
-            @RequestParam Long userId,
-            @RequestParam String date
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {
-        LocalDate localDate = LocalDate.parse(date);
-        return ResponseEntity.ok(dailyService.getDaily(userId, localDate));
+        System.out.println("get 함수 실행");
+        if (principalDetails == null) {
+            System.out.println("❌ AuthenticationPrincipal is NULL (JWT 인증 실패)");
+            return ResponseEntity.status(401).build();
+        }
+//        LocalDate localDate = LocalDate.parse(date);
+        Long userId = principalDetails.getUser().getId();
+
+        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, date);
+
+        // ✅ 이미지 URL 확인 로그
+        System.out.println("✅ 이미지 URL: " + dailyResponseDTO.getDrawing());
+
+        return ResponseEntity.ok(dailyService.getDaily(userId, date));
     }
 
-    // 작성
-    @PostMapping("/save")
+    // 작성 (이미지 포함)
+    @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     public ResponseEntity<DailyResponseDTO> saveDaily(
-            @RequestBody DailyRequestDTO requestDTO
-    ) {
-        return ResponseEntity.ok(dailyService.saveDaily(requestDTO.getUserId(), requestDTO));
+            @RequestPart(value = "request", required = false) DailyRequestDTO requestData, // JSON 데이터
+            @RequestPart(value = "drawing", required = false) MultipartFile drawing // 파일 (선택적)
+    ) throws IOException {
+        System.out.println("✅ [saveDaily] API 호출됨");
+        System.out.println("📌 받은 JSON 데이터: " + requestData);
+
+        // JSON 데이터를 객체로 변환
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new JavaTimeModule()); // LocalDate 지원 추가
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        DailyRequestDTO requestDTO = objectMapper.readValue(requestData, DailyRequestDTO.class);
+
+        requestData.setDrawing(drawing); // DTO에 파일 설정
+
+        return ResponseEntity.ok(dailyService.saveDaily(requestData.getUserId(), requestData));
     }
-
-
-
 }

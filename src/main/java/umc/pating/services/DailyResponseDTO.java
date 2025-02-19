@@ -27,7 +27,7 @@ public class DailyResponseDTO {
     public DailyResponseDTO(Daily daily) {
         this.id = daily.getId();
         this.dailyDayRecording = daily.getDailyDayRecording();
-        this.drawing = daily.getDrawing();
+        this.drawing = daily.getDrawing()!= null ? daily.getDrawing() : "";;
         this.drawingTime = daily.getDrawingTime();
         this.feedback = daily.getFeedback();
         this.difficultIssue = daily.getDifficultIssue();

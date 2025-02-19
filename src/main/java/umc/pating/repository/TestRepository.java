@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import umc.pating.entity.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
     Optional<Test> findByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
     Optional<Test> findByUserIdAndTestDayRecording(Long userId, LocalDate dailyDayRecording);
+
+    List<Test> findByUserIdAndTestDayRecordingBetween(Long userId, LocalDate startDate, LocalDate endDate);
+
 }
