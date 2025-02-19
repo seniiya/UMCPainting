@@ -44,7 +44,7 @@ public class Daily extends BaseEntity {
     private String goodIssue;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true) //
+    @Column(nullable = true)
     private TodayMood todayMood;
 
     private String moodDetail;

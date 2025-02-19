@@ -1,8 +1,6 @@
 package umc.pating.controllers;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,22 +28,22 @@ public class DailyController {
     @GetMapping("/get")
     public ResponseEntity<DailyResponseDTO> getDaily(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestParam String date
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {
         System.out.println("get 함수 실행");
         if (principalDetails == null) {
             System.out.println("❌ AuthenticationPrincipal is NULL (JWT 인증 실패)");
             return ResponseEntity.status(401).build();
         }
-        LocalDate localDate = LocalDate.parse(date);
+//        LocalDate localDate = LocalDate.parse(date);
         Long userId = principalDetails.getUser().getId();
 
-        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, localDate);
+        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, date);
 
         // ✅ 이미지 URL 확인 로그
         System.out.println("✅ 이미지 URL: " + dailyResponseDTO.getDrawing());
 
-        return ResponseEntity.ok(dailyService.getDaily(userId, localDate));
+        return ResponseEntity.ok(dailyService.getDaily(userId, date));
     }
 
     // 작성 (이미지 포함)
