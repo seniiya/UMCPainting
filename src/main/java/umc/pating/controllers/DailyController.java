@@ -85,9 +85,9 @@ public class DailyController {
         System.out.println("📌 받은 JSON 데이터: " + request);
 
         // JSON 데이터를 DTO로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // LocalDate 지원 추가
-        DailyRequestDTO requestDTO = objectMapper.readValue(requestData, DailyRequestDTO.class);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new JavaTimeModule()); // LocalDate 지원 추가
+//        DailyRequestDTO requestDTO = objectMapper.readValue(requestData, DailyRequestDTO.class);
 
 //        request.setDrawing(drawing); // DTO에 파일 설정
 
