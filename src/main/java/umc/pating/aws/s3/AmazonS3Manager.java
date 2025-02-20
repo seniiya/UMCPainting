@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import umc.pating.config.AwsS3Config;
 import umc.pating.entity.common.Uuid;
@@ -14,7 +15,7 @@ import umc.pating.entity.common.Uuid;
 import java.io.IOException;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class AmazonS3Manager{
 
@@ -32,7 +33,11 @@ public class AmazonS3Manager{
 //    }
 
     public String uploadFile(MultipartFile file) throws IOException {
-        String fileName = grimiDrawing + uuid.randomUuID() + "_" + file.getOriginalFilename();
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
+        String fileName = grimiDrawing +"/" + uuid.randomUuID() + "_" + file.getOriginalFilename();
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
