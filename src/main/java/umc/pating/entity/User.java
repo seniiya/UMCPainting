@@ -59,4 +59,19 @@ public class User implements Serializable {
 
     @CreationTimestamp
     private Timestamp timestamp;
+
+    //가입 년도
+    @Column(nullable = false, updatable = false)
+    private Integer joinYear;
+
+    // 가입년도 자동으로 설정하는 생성자
+    public static User createUser(String userName, String email, Integer birthYear, String role) {
+        return User.builder()
+                .userName(userName)
+                .email(email)
+                .birthYear(birthYear)
+                .role(role)
+                .joinYear(java.time.LocalDate.now().getYear()) // ✅ 현재 연도를 자동으로 설정
+                .build();
+    }
 }

@@ -1,6 +1,8 @@
 package umc.pating.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.*;
@@ -44,7 +46,8 @@ public class Daily extends BaseEntity {
     private String goodIssue;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private TodayMood todayMood;
 
     private String moodDetail;

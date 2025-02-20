@@ -67,7 +67,13 @@ public class DailyService {
 
         // S3에 이미지 업로드 (파일이 있으면)
         String drawingUrl = null;
-        if (request.getDrawing() != null && !request.getDrawing().isEmpty()) {
+//        if (request.getDrawing() != null && !request.getDrawing().isEmpty()) {
+//            drawingUrl = amazonS3Manager.uploadFile(request.getDrawing()); // S3 업로드 후 URL 반환
+//        }
+
+        if (request.getDrawing() != null || request.getDrawing().isEmpty()) {
+            drawingUrl = null;
+        } else {
             drawingUrl = amazonS3Manager.uploadFile(request.getDrawing()); // S3 업로드 후 URL 반환
         }
 
@@ -77,7 +83,7 @@ public class DailyService {
 
             // null 아닐 때만 수정
             if (request.getDrawing() != null && daily.getDrawing().trim().isEmpty()) {
-                daily.setDrawing(request.getDrawingTime());
+                daily.setDrawing(String.valueOf(request.getDrawing()));
             }
             if (drawingUrl != null) {
                 daily.setDrawing(drawingUrl);
@@ -120,7 +126,10 @@ public class DailyService {
                     .build();
         }
 
+        System.out.println("📝 저장할 Daily 객체: " + daily);
         dailyRepository.save(daily);
+        System.out.println("✅ 저장 완료! id: " + daily.getId());
+
         return new DailyResponseDTO(daily);
     }
 

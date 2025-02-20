@@ -56,4 +56,10 @@ public class UserService {
         return new UserResponseDTO(userRepository.save(user));
 
     }
+
+    // 회원가입 시 joinyear 자동설정
+    public User registerUser(String userName, String email, Integer birthYear, String role) {
+        User user = User.createUser(userName, email, birthYear, role);
+        return userRepository.save(user);
+    }
 }
