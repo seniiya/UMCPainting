@@ -33,18 +33,22 @@ public class DailyController {
     // 조회
     @GetMapping("/get")
     public ResponseEntity<DailyResponseDTO> getDaily(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+            @RequestParam Long userId,  // ✅ userId 직접 받음
+            @RequestParam String date
     ) {
+        System.out.println("✅ [getDaily] API 호출됨 - userId: " + userId + ", date: " + date);
         System.out.println("get 함수 실행");
-        if (principalDetails == null) {
-            System.out.println("❌ AuthenticationPrincipal is NULL (JWT 인증 실패)");
-            return ResponseEntity.status(401).build();
-        }
+//        if (principalDetails == null) {
+//            System.out.println("❌ AuthenticationPrincipal is NULL (JWT 인증 실패)");
+//            return ResponseEntity.status(401).build();
+//        }
 //        LocalDate localDate = LocalDate.parse(date);
-        Long userId = principalDetails.getUser().getId();
+//        Long userId = principalDetails.getUser().getId();
 
-        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, date);
+//        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, localDate);
+
+        LocalDate localDate = LocalDate.parse(date);
+        DailyResponseDTO dailyResponseDTO = dailyService.getDaily(userId, localDate);
 
         // ✅ 이미지 URL 확인 로그
         System.out.println("✅ 이미지 URL: " + dailyResponseDTO.getDrawing());
