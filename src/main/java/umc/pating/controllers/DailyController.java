@@ -79,10 +79,10 @@ public class DailyController {
 
 
     // 작성 (이미지 포함)
-    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/save", consumes = {"application/json"})
     public ResponseEntity<DailyResponseDTO> saveDaily(
 
-            @RequestPart(value = "request", required = false) DailyRequestDTO request // JSON 데이터
+            @RequestBody DailyRequestDTO request // JSON 데이터
 
     ) throws IOException {
         System.out.println("✅ [saveDaily] API 호출됨");
