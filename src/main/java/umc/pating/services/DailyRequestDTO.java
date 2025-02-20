@@ -18,7 +18,7 @@ public class DailyRequestDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dailyDayRecording;
 
-    private MultipartFile drawing;
+    private String drawing;
     private String drawingTime;
     private String feedback;
     private String difficultIssue;
