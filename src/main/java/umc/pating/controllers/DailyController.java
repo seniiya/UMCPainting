@@ -1,6 +1,6 @@
 package umc.pating.controllers;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class DailyController {
         // ✅ 이미지 URL 확인 로그
         System.out.println("✅ 이미지 URL: " + dailyResponseDTO.getDrawing());
 
-        return ResponseEntity.ok(dailyService.getDaily(userId, localDate));
+        return ResponseEntity.ok(dailyService.getDaily(userId, date));
     }
 
     @PostMapping(value = "/savefile", consumes = {"multipart/form-data"})
@@ -81,19 +81,22 @@ public class DailyController {
     // 작성 (이미지 포함)
     @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<DailyResponseDTO> saveDaily(
+
             @RequestPart(value = "request", required = false) DailyRequestDTO request // JSON 데이터
+
     ) throws IOException {
         System.out.println("✅ [saveDaily] API 호출됨");
         System.out.println("📌 받은 JSON 데이터: " + request);
 
-        // JSON 데이터를 객체로 변환
+        // JSON 데이터를 DTO로 변환
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        objectMapper.registerModule(new JavaTimeModule()); // LocalDate 지원 추가
-//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 //        DailyRequestDTO requestDTO = objectMapper.readValue(requestData, DailyRequestDTO.class);
 
 //        request.setDrawing(drawing); // DTO에 파일 설정
 
         return ResponseEntity.ok(dailyService.saveDaily(request.getUserId(), request));
+
     }
+
 }

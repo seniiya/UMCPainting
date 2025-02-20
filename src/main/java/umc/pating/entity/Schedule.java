@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.pating.entity.common.BaseEntity;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -24,5 +26,12 @@ public class Schedule {
 
     private Integer year;
 
+    // ✅ ScheduleDetail 리스트 추가
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ScheduleDetail> details;
+
+
 
 }
+
+//머지용22

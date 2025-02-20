@@ -16,9 +16,18 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @GetMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleResponseDTO> getScheduleWithDetails(@PathVariable Long scheduleId) {
-        return ResponseEntity.ok(scheduleService.getSchedule(scheduleId));
+//    @GetMapping("/{userId}/{scheduleId}")
+//    public ResponseEntity<ScheduleResponseDTO> getUserSchedule(
+//            @PathVariable Long userId,
+//            @PathVariable Long scheduleId
+//    ) {
+//        return ResponseEntity.ok(scheduleService.getUserSchedule(userId, scheduleId));
+//    }
+
+    @GetMapping("/{userId}/{year}")
+    public ResponseEntity<ScheduleResponseDTO> getOrCreateSchedule(
+            @PathVariable Long userId, @PathVariable int year) {
+        return ResponseEntity.ok(scheduleService.getOrCreateSchedule(userId, year));
     }
 
 }
