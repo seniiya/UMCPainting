@@ -51,7 +51,7 @@ public class DailyController {
     // 작성 (이미지 포함)
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     public ResponseEntity<DailyResponseDTO> saveDaily(
-            @RequestParam(value = "request", required = false) DailyRequestDTO requestData, // JSON 데이터
+            @RequestPart(value = "request", required = false) DailyRequestDTO requestData, // JSON 데이터
             @RequestPart(value = "drawing", required = false) MultipartFile drawing // 파일 (선택적)
     ) throws IOException {
         System.out.println("✅ [saveDaily] API 호출됨");
