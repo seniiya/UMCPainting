@@ -53,7 +53,7 @@ public class DailyController {
         // ✅ 이미지 URL 확인 로그
         System.out.println("✅ 이미지 URL: " + dailyResponseDTO.getDrawing());
 
-        return ResponseEntity.ok(dailyService.getDaily(userId, date));
+        return ResponseEntity.ok(dailyService.getDaily(userId, LocalDate.parse(date)));
     }
 
     @PostMapping(value = "/savefile", consumes = {"multipart/form-data"})
