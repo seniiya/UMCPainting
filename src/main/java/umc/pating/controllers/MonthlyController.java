@@ -20,19 +20,30 @@ import java.util.List;
 public class MonthlyController {
     private final MonthlyService monthlyService;
 
+//    @GetMapping("")
+//    public ResponseEntity<List<MonthlyResponseDTO>> getMonthly (
+//            @AuthenticationPrincipal PrincipalDetails principalDetails,
+//            @RequestParam Integer year,
+//            @RequestParam Integer month
+//    ) {
+//        if (principalDetails == null) {
+//            return ResponseEntity.status(401).build();
+//        }
+//
+//        Long userId = principalDetails.getUser().getId();
+//        return ResponseEntity.ok(monthlyService.getMonthly(userId, year, month));
+//
+//    }
+
     @GetMapping("")
-    public ResponseEntity<List<MonthlyResponseDTO>> getMonthly (
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
+    public ResponseEntity<List<MonthlyResponseDTO>> getMonthly(
+            @RequestParam Long userId, // ✅ userId 직접 받기
             @RequestParam Integer year,
             @RequestParam Integer month
     ) {
-        if (principalDetails == null) {
-            return ResponseEntity.status(401).build();
-        }
+        System.out.println("✅ [getMonthly] API 호출됨 - userId: " + userId + ", year: " + year + ", month: " + month);
 
-        Long userId = principalDetails.getUser().getId();
         return ResponseEntity.ok(monthlyService.getMonthly(userId, year, month));
-
     }
 
 }
