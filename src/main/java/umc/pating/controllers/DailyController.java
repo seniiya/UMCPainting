@@ -37,7 +37,7 @@ public class DailyController {
             @RequestParam String date
     ) {
         System.out.println("✅ [getDaily] API 호출됨 - userId: " + userId + ", date: " + date);
-        System.out.println("get 함수 실행");
+//        System.out.println("get 함수 실행");
 //        if (principalDetails == null) {
 //            System.out.println("❌ AuthenticationPrincipal is NULL (JWT 인증 실패)");
 //            return ResponseEntity.status(401).build();

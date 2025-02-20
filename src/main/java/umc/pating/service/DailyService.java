@@ -31,20 +31,38 @@ public class DailyService {
     public DailyResponseDTO getDaily(Long userId, LocalDate date) {
         System.out.println("✅ [DailyService] getDaily 실행 - userId: " + userId + ", date: " + date);
 
-        Daily daily = dailyRepository.findByUserIdAndDailyDayRecording(userId, date)
-                .orElseThrow(() -> {
-                    System.out.println("❌ 해당 날짜의 Daily 기록 없음!"); // ❌ 데이터가 없는 경우 로그 추가
-                    return new RuntimeException("해당 날짜의 기록이 없습니다.");
-                });
+        // 기존 기록 조회
+        Optional<Daily> dailyOptional = dailyRepository.findByUserIdAndDailyDayRecording(userId, date);
 
-        // ✅ 조회된 데이터 확인
-        System.out.println("✅ 조회된 Daily 데이터: " + daily);
+        Daily daily;
 
-        // ✅ 이미지 URL 확인
-        if (daily.getDrawing() == null || daily.getDrawing().isEmpty()) {
-            System.out.println("⚠️ 저장된 이미지가 없음!");
+        if (dailyOptional.isPresent()) {
+            daily = dailyOptional.get();
+            System.out.println("✅ 기존 Daily 기록 조회 완료: " + daily);
         } else {
-            System.out.println("✅ 저장된 이미지 URL: " + daily.getDrawing());
+            System.out.println("⚠️ 기록이 없으므로 새로 생성합니다.");
+
+            // ✅ 유저 정보 조회
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            // ✅ 새로운 Daily 기록 생성
+            daily = Daily.builder()
+                    .user(user)
+                    .dailyDayRecording(date)
+                    .drawing("")  // 기본값 (초기에는 이미지 없음)
+                    .drawingTime("0시간 0분")  // 기본값
+                    .feedback("")
+                    .difficultIssue("")
+                    .goodIssue("")
+                    .todayMood(null)
+                    .moodDetail("")
+                    .question("")
+                    .build();
+
+            // 새 기록 저장
+            dailyRepository.save(daily);
+            System.out.println("✅ 새로운 Daily 기록 생성 완료: " + daily);
         }
 
         return new DailyResponseDTO(daily);
