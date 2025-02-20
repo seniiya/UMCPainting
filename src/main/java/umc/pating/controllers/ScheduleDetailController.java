@@ -22,7 +22,7 @@ public class ScheduleDetailController {
         return ResponseEntity.ok(scheduleDetailService.getScheduleDetail(detailId));
     }
 
-    @PostMapping // 스케줄 생성
+    @PostMapping("/{userId}") // 스케줄 생성
     public ResponseEntity<ScheduleDetailResponseDTO> createScheduleDetail(@RequestBody ScheduleDetailRequestDTO requestDTO) {
         ScheduleDetailResponseDTO response = scheduleDetailService.createScheduleDetail(requestDTO);
         return ResponseEntity.ok(response);

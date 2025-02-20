@@ -66,17 +66,21 @@ public class DailyService {
         Daily daily;
 
         // S3에 이미지 업로드 (파일이 있으면)
+
 //        String drawingUrl = null;
 //        if (request.getDrawing() != null) {
 //            drawingUrl = amazonS3Manager.uploadFile(request.getDrawing()); // S3 업로드 후 URL 반환
 //            request.setDrawing(drawingUrl);
 //        }
 
+
         if (existingDaily.isPresent()) {
             // 기존 데이터가 있으면 update
             daily = existingDaily.get();
+
             if (request.getDrawing() != null) {
                 daily.setDrawing(request.getDrawing());  // 🔹 DB에 S3 URL 저장
+
             }
 //            if (drawingUrl != null) {
 //                daily.setDrawing(drawingUrl);
@@ -119,7 +123,10 @@ public class DailyService {
                     .build();
         }
 
+        System.out.println("📝 저장할 Daily 객체: " + daily);
         dailyRepository.save(daily);
+        System.out.println("✅ 저장 완료! id: " + daily.getId());
+
         return new DailyResponseDTO(daily);
     }
 
